@@ -1,0 +1,48 @@
+extends layouts/layout
+
+block content
+  div#messages
+  form#message-form(onsubmit='return send();')
+    input#message(type='text')
+    input(type='submit' value='Send')
+  script(src='/socket.io/socket.io.js')
+  script.
+    const socket = io({
+      withCredentials: true,
+      extraHeaders: {
+        'room-short-id': '#{room.shortId}',
+      }
+    });
+
+    socket.on('message', (message) => {
+      addMessage(message);
+      scroll();
+    });
+
+    socket.on('messages', (messages) => {
+      messages.map(addMessage);
+      scroll();
+    });
+
+    socket.on('disconnect', () => {
+      console.log('socket disconnected');
+    });
+
+    function send() {
+      const message = document.getElementById('message').value;
+      socket.emit('message', message);
+      document.getElementById('message').value='';
+      scroll();
+      return false;
+    }
+
+    function addMessage({ sender, message }) {
+      const msg = document.createElement('p');
+      msg.innerHTML=`${unescape(sender)}: ${message}`;
+      document.getElementById('messages').appendChild(msg);
+    }
+
+    function scroll() {
+      const messages = document.getElementById("messages");
+      messages.scrollTop = messages.scrollHeight;
+    }

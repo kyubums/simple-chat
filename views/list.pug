@@ -1,0 +1,7 @@
+extends layouts/layout
+
+block content
+  ul
+    each room in rooms
+      li: a(href=`/chats/${room.shortId}`) #{room.title}
+  buttom: a(href='/chats/new') 채팅방 생성

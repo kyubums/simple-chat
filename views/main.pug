@@ -1,0 +1,11 @@
+extends layouts/layout
+
+block content
+  input#name(type="text")
+  button(onclick="enter()") 입장
+  script.
+    function enter() {
+      const name = document.getElementById("name").value;
+      document.cookie = `name=${escape(name)};`;
+      window.location='/chats';
+    }

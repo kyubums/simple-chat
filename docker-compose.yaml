@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mongo:
+    container_name: test-mongo
+    image: mongo:4.4
+    environment:
+      - TZ=Asia/Seoul
+    restart: always
+    volumes:
+      - ../volumes/mongodb/test:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --port 27017 --bind_ip_all

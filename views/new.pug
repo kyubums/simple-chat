@@ -1,0 +1,7 @@
+extends layouts/layout
+
+block content
+  form(action='/chats' method='post')
+    label 제목
+    input(type='text' name='title')
+    input(type='submit' value='생성')
